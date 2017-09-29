@@ -14,8 +14,8 @@ statuses of the true observations.}
 }
 \value{
 A 0/1 matrix with \code{number_permutations} rows and
-  \code{length(original)} columns. If there are fewer possible permutations
-  than are requested, an error may be thrown.
+\code{length(original)} columns. If there are fewer possible permutations
+than are requested, an error may be thrown.
 }
 \description{
 Called when \code{uniqueperm::get_unique_perms(method = "pseudo")}. It is the
@@ -25,8 +25,8 @@ be distinct from another set generated at a different time, use this option.
 }
 \details{
 This method is a helper function not meant for general use. Use
-  \code{get_unique_perms} instead, as it has more parameter checking and
-  safeguards.
+\code{\link{get_unique_perms}} instead, as it has more parameter checking and
+safeguards.
 }
 \examples{
 example_states <- c(0,0,0,0,1,1,1,1)
@@ -36,6 +36,10 @@ get_unique_perms(example_states, 34, method = "pseudo")
 example_states <- c(rep(1, 500), rep(0,500))
 pseudorandom_generation(example_states, 1000)
 
+}
+\seealso{
+Other permutation generation methods: \code{\link{bitset_generation}},
+  \code{\link{fast_generation}}
 }
 \author{
 Sage Wright, Samantha Jensen

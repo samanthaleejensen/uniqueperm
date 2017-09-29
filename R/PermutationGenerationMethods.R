@@ -8,8 +8,8 @@
 #'
 #' This method is the default method upon calling
 #' \code{uniqueperm::get_unique_perms}. It is the second-fastest method in the
-#' package (after \code{pseudorandom_generation}), but requires more memory than
-#' \code{bitset_generation}.
+#' package (after \code{\link{pseudorandom_generation}}), but requires more memory than
+#' \code{\link{bitset_generation}}.
 #'
 #' @param original an integer (0/1 only) or logical vector representing the
 #'   statuses of the true observations.
@@ -20,7 +20,7 @@
 #'   than are requested, only as many as are possible will be generated.
 #'
 #' @details This method is a helper function not meant for general use. Use
-#'   \code{get_unique_perms} instead, as it has more parameter checking and
+#'   \code{\link{get_unique_perms}} instead, as it has more parameter checking and
 #'   safeguards.
 #'
 #' @examples
@@ -31,6 +31,8 @@
 #'
 #' example_states <- c(rep(1, 500), rep(0,500))
 #' fast_generation(example_states, 1000)
+#'
+#'@family permutation generation methods
 #'
 #' @author
 #' Dr. Stephen Piccolo, Samantha Jensen
@@ -102,7 +104,7 @@ fast_generation <- function(original, number_permutations) {
 #'   than are requested, an error may be thrown.
 #'
 #' @details This method is a helper function not meant for general use. Use
-#'   \code{get_unique_perms} instead, as it has more parameter checking and
+#'   \code{\link{get_unique_perms}} instead, as it has more parameter checking and
 #'   safeguards.
 #'
 #' @examples
@@ -112,6 +114,8 @@ fast_generation <- function(original, number_permutations) {
 #'
 #' example_states <- c(rep(1, 500), rep(0,500))
 #' pseudorandom_generation(example_states, 1000)
+#'
+#'@family permutation generation methods
 #'
 #' @author Sage Wright, Samantha Jensen
 pseudorandom_generation <- function() {
@@ -138,7 +142,7 @@ pseudorandom_generation <- function() {
 #'   than are requested, an error may be thrown.
 #'
 #' @details This method is a helper function not meant for general use. Use
-#'   \code{get_unique_perms} instead, as it has more parameter checking and
+#'   \code{\link{get_unique_perms}} instead, as it has more parameter checking and
 #'   safeguards.
 #'
 #'   If you are getting errors while using this method it is likely because this
@@ -152,6 +156,8 @@ pseudorandom_generation <- function() {
 #'
 #' example_states <- c(rep(1, 500), rep(0,500))
 #' bitset_generation(example_states, 1000)
+#'
+#'@family permutation generation methods
 #'
 #' @author PJ Tatlow, Samantha Jensen
 bitset_generation <- function(original, number_permutations) {
