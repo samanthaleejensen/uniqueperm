@@ -22,12 +22,12 @@ specified or if \code{true_random = TRUE}.}
 be prioritized. Defaults to \code{TRUE}. Will be ignored if \code{method} is
 specified or if \code{fast = TRUE}.}
 
-\item{method}{which type of algorithm to run; options are "default",
-"pseudo", and "bitset". Defaults to "default".}
-
 \item{true_random}{\code{TRUE}/\code{FALSE}; whether we care if permutations are truly
 randomly generated. Defaults to \code{TRUE}. Will be ignored if \code{method} is
 specified or if \code{fast = FALSE}.}
+
+\item{method}{which type of algorithm to run; options are "default",
+"pseudo", and "bitset". Defaults to "default".}
 }
 \value{
 A 0/1 matrix with \code{number_permutations} rows and
