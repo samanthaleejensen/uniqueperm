@@ -14,8 +14,8 @@ statuses of the true observations.}
 }
 \value{
 A 0/1 matrix with \code{number_permutations} rows and
-  \code{length(original)} columns. If there are fewer possible permutations
-  than are requested, an error may be thrown.
+\code{length(original)} columns. If there are fewer possible permutations
+than are requested, an error may be thrown.
 }
 \description{
 Called when \code{uniqueperm::get_unique_perms(method = "bitset")}. It is the
@@ -25,12 +25,12 @@ use this method.
 }
 \details{
 This method is a helper function not meant for general use. Use
-  \code{get_unique_perms} instead, as it has more parameter checking and
-  safeguards.
+\code{\link{get_unique_perms}} instead, as it has more parameter checking and
+safeguards.
 
-  If you are getting errors while using this method it is likely because this
-  method has a C++ implementation. Check to make sure that you have the
-  necessary tools to compile C++ code.
+If you are getting errors while using this method it is likely because this
+method has a C++ implementation. Check to make sure that you have the
+necessary tools to compile C++ code.
 }
 \examples{
 example_states <- c(0,0,0,0,1,1,1,1)
@@ -40,6 +40,10 @@ get_unique_perms(example_states, 34, method = "bitset")
 example_states <- c(rep(1, 500), rep(0,500))
 bitset_generation(example_states, 1000)
 
+}
+\seealso{
+Other permutation generation methods: \code{\link{fast_generation}},
+  \code{\link{pseudorandom_generation}}
 }
 \author{
 PJ Tatlow, Samantha Jensen

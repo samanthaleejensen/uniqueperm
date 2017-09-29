@@ -4,29 +4,29 @@
 \alias{fast_generation}
 \title{Fast unique permutation generation}
 \usage{
-fast_generation(original, permutations)
+fast_generation(original, number_permutations)
 }
 \arguments{
 \item{original}{an integer (0/1 only) or logical vector representing the
 statuses of the true observations.}
 
-\item{permutations}{integer; desired number of permutations to find.}
+\item{number_permutations}{integer; desired number of permutations to find.}
 }
 \value{
-A 0/1 matrix with \code{permutations} rows and
-  \code{length(original)} columns. If there are fewer possible permutations
-  than are requested, an error may be thrown.
+A 0/1 matrix with \code{number_permutations} rows and
+\code{length(original)} columns. If there are fewer possible permutations
+than are requested, only as many as are possible will be generated.
 }
 \description{
 This method is the default method upon calling
 \code{uniqueperm::get_unique_perms}. It is the second-fastest method in the
-package (after \code{pseudorandom_generation}), but requires more memory than
-\code{bitset_generation}.
+package (after \code{\link{pseudorandom_generation}}), but requires more memory than
+\code{\link{bitset_generation}}.
 }
 \details{
 This method is a helper function not meant for general use. Use
-  \code{get_unique_perms} instead, as it has more parameter checking and
-  safeguards.
+\code{\link{get_unique_perms}} instead, as it has more parameter checking and
+safeguards.
 }
 \examples{
 example_states <- c(0,0,0,0,1,1,1,1)
@@ -37,6 +37,10 @@ get_unique_perms(example_states, 34, method = "default")
 example_states <- c(rep(1, 500), rep(0,500))
 fast_generation(example_states, 1000)
 
+}
+\seealso{
+Other permutation generation methods: \code{\link{bitset_generation}},
+  \code{\link{pseudorandom_generation}}
 }
 \author{
 Dr. Stephen Piccolo, Samantha Jensen
