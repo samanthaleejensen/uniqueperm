@@ -134,5 +134,4 @@
 #'
 #' @author Dr. Stephen Piccolo, Samantha Jensen
 get_unique_perms <- function(original, number_permutations, fast = TRUE, memory_efficient = TRUE, truly_random = TRUE, method = "default") {
-
 }
