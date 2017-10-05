@@ -17,11 +17,12 @@
 #'
 #' @return A 0/1 matrix with \code{number_permutations} rows and
 #'   \code{length(original)} columns. If there are fewer possible permutations
-#'   than are requested, only as many as are possible will be generated.
+#'   than are requested, an error may be thrown.
 #'
 #' @details This method is a helper function not meant for general use. Use
 #'   \code{\link{get_unique_perms}} instead, as it has more parameter checking and
-#'   safeguards.
+#'   safeguards. For example, if there are fewer possible permutations than are
+#'   requested, calling this method directly will cause an error.
 #'
 #' @examples
 #' example_states <- c(0,0,0,0,1,1,1,1)
@@ -38,7 +39,6 @@
 #' Dr. Stephen Piccolo, Samantha Jensen
 fast_generation <- function(original, number_permutations) {
   number_observations <- length(original) #number of observations
-  maximum_permutations <- choose(number_observations, min(table(original)))# determine max possible permutations
 
   #find which group is larger
   grouped_observations <- sort(table(original)) # group cases and controls and count
@@ -68,7 +68,7 @@ fast_generation <- function(original, number_permutations) {
 
   to_generate <- ceiling(number_permutations * 0.10) # keep adding 10% to permutation list until proper length
 
-  while ((length(permutations) < maximum_permutations) & (length(permutations) < (number_permutations + 1))) {
+  while ((length(permutations) < (number_permutations + 1))) {
     permutations <- bulk_generate() #generate to_generate permutations at once
   }
 
@@ -105,7 +105,8 @@ fast_generation <- function(original, number_permutations) {
 #'
 #' @details This method is a helper function not meant for general use. Use
 #'   \code{\link{get_unique_perms}} instead, as it has more parameter checking and
-#'   safeguards.
+#'   safeguards. For example, if there are fewer possible permutations than are
+#'   requested, calling this method directly will cause an error.
 #'
 #' @examples
 #' example_states <- c(0,0,0,0,1,1,1,1)
@@ -143,7 +144,8 @@ pseudorandom_generation <- function() {
 #'
 #' @details This method is a helper function not meant for general use. Use
 #'   \code{\link{get_unique_perms}} instead, as it has more parameter checking and
-#'   safeguards.
+#'   safeguards. For example, if there are fewer possible permutations than are
+#'   requested, calling this method directly will cause an error.
 #'
 #'   If you are getting errors while using this method it is likely because this
 #'   method has a C++ implementation. Check to make sure that you have the

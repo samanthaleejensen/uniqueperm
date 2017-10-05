@@ -26,7 +26,8 @@ use this method.
 \details{
 This method is a helper function not meant for general use. Use
 \code{\link{get_unique_perms}} instead, as it has more parameter checking and
-safeguards.
+safeguards. For example, if there are fewer possible permutations than are
+requested, calling this method directly will cause an error.
 
 If you are getting errors while using this method it is likely because this
 method has a C++ implementation. Check to make sure that you have the

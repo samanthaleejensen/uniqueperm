@@ -26,7 +26,8 @@ be distinct from another set generated at a different time, use this option.
 \details{
 This method is a helper function not meant for general use. Use
 \code{\link{get_unique_perms}} instead, as it has more parameter checking and
-safeguards.
+safeguards. For example, if there are fewer possible permutations than are
+requested, calling this method directly will cause an error.
 }
 \examples{
 example_states <- c(0,0,0,0,1,1,1,1)

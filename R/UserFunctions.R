@@ -134,4 +134,21 @@
 #'
 #' @author Dr. Stephen Piccolo, Samantha Jensen
 get_unique_perms <- function(original, number_permutations, fast = TRUE, memory_efficient = TRUE, truly_random = TRUE, method = "default") {
+
+  # checking that generating requested permutations is possible
+  maximum_permutations <- choose(length(original), min(table(original)))# determine max possible permutations
+
+  if (number_permutations > maximum_permutations - 1) { # if not possible, do as many as possible.
+    number_permutations = maximum_permutations - 1
+  }
+
+  if (memory_efficient & !fast){
+    return(bitset_generation(original, number_permutations))
+  }
+  else if (fast & !truly_random){
+    return(pseudorandom_generation(original, number_permutations))
+  }
+  else {
+    return(fast_generation(original, number_permutations))
+  }
 }
