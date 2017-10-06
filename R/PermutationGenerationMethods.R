@@ -37,6 +37,7 @@
 #'
 #' @author
 #' Dr. Stephen Piccolo, Samantha Jensen
+#' @export
 fast_generation <- function(original, number_permutations) {
   number_observations <- length(original) #number of observations
 
@@ -56,7 +57,7 @@ fast_generation <- function(original, number_permutations) {
     # a sub-sub-function to return a sorted randomly generated list of indices
     sample_sort <- function(max_index) {
       sample <- sample.int(max_index, size = number_minority) # get number_minority values between 1 and number_observations
-      return(sort2(sample)) # return a sorted list of indices
+      return(grr::sort2(sample)) # return a sorted list of indices
     }
 
     observations_per_permutation <- rep(number_observations, to_generate) # get a list of the number of observations per each new permutation (they will all be the same)
@@ -73,7 +74,7 @@ fast_generation <- function(original, number_permutations) {
   }
 
   #remove original observations and any extra permutations
-  permutations <- permutations[2:(min(number_permutations, (maximum_permutations - 1)) + 1)]
+  permutations <- permutations[2:(number_permutations + 1)]
 
   #make and return matrix of permutations
   permutations_matrix <- matrix(majority, ncol=number_observations, nrow = length(permutations)) # initially fill entirely with majority element
@@ -119,7 +120,8 @@ fast_generation <- function(original, number_permutations) {
 #'@family permutation generation methods
 #'
 #' @author Sage Wright, Samantha Jensen
-pseudorandom_generation <- function() {
+#' @export
+pseudorandom_generation <- function(original, number_permutations) {
 
 }
 
@@ -162,6 +164,7 @@ pseudorandom_generation <- function() {
 #'@family permutation generation methods
 #'
 #' @author PJ Tatlow, Samantha Jensen
+#' @export
 bitset_generation <- function(original, number_permutations) {
 
 }

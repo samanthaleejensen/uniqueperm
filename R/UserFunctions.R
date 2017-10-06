@@ -9,22 +9,16 @@
 #' Efficiently generate truly unique and random permutations of binary data in
 #' R.
 #'
-#' @usage
-#' get_unique_perms(original, number_permutations)
-#' get_unique_perms(original, number_permutations, fast = FALSE)
-#' get_unique_perms(original, number_permutations, true_random = FALSE)
-#'
-#'
 #' @param original an integer (0/1 only) or logical vector representing the
 #'   statuses of the true observations.
 #' @param number_permutations integer; desired number of permutations to find.
 #' @param fast \code{TRUE}/\code{FALSE}; whether or not speed of permutation generation should
 #'   be prioritized. Defaults to \code{TRUE}. Will be ignored if \code{method} is
-#'   specified or if \code{true_random = TRUE}.
+#'   specified or if \code{truly_random = TRUE}.
 #' @param memory_efficient \code{TRUE}/\code{FALSE}; whether or not memory efficiency should
 #'   be prioritized. Defaults to \code{TRUE}. Will be ignored if \code{method} is
 #'   specified or if \code{fast = TRUE}.
-#' @param true_random \code{TRUE}/\code{FALSE}; whether we care if permutations are truly
+#' @param truly_random \code{TRUE}/\code{FALSE}; whether we care if permutations are truly
 #'   randomly generated. Defaults to \code{TRUE}. Will be ignored if \code{method} is
 #'   specified or if \code{fast = FALSE}.
 #' @param method which type of algorithm to run; options are "default",
@@ -59,14 +53,14 @@
 #' There is no one method that is fast, memory efficient, and truly random. If
 #' you are not sure which method will work best for you, you can choose which of
 #' these factors matters most to you and indicate such with the parameters
-#' \code{fast}, \code{memory_efficient}, and \code{true_random}. The method will
+#' \code{fast}, \code{memory_efficient}, and \code{truly_random}. The method will
 #' then be automatically selected for you.
 #'
 #' The below chart represents the combination of parameters that will trigger
 #' which method:
 # has a lot of tabs to make spacing reasonable...
 #' \tabular{lllllllllllllllllllllllllllllllllll}{
-#'             \tab \tab \emph{\code{fast}}   \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \emph{\code{memory_efficient}}  \tab \tab \emph{\code{true_random}} \tab \tab \tab \tab \tab \tab \tab \tab \tab \emph{\code{method}} \tab \tab \tab \tab \tab \emph{calls}                          \cr
+#'             \tab \tab \emph{\code{fast}}   \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \emph{\code{memory_efficient}}  \tab \tab \emph{\code{truly_random}} \tab \tab \tab \tab \tab \tab \tab \tab \tab \emph{\code{method}} \tab \tab \tab \tab \tab \emph{calls}                          \cr
 #'  \strong{1} \tab \tab \code{TRUE}          \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \code{TRUE}                     \tab \tab \code{TRUE}               \tab \tab \tab \tab \tab \tab \tab \tab \tab "default"            \tab \tab \tab \tab \tab \code{\link{fast_generation}}         \cr
 #'  \strong{2} \tab \tab \code{TRUE}          \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \code{TRUE}                     \tab \tab \code{FALSE}              \tab \tab \tab \tab \tab \tab \tab \tab \tab "pseudo"             \tab \tab \tab \tab \tab \code{\link{pseudorandom_generation}} \cr
 #'  \strong{3} \tab \tab \code{TRUE}          \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \code{FALSE}                    \tab \tab \code{TRUE}               \tab \tab \tab \tab \tab \tab \tab \tab \tab "default"            \tab \tab \tab \tab \tab \code{\link{fast_generation}}         \cr
@@ -92,12 +86,12 @@
 #' get_unique_perms(example_states, 34, fast = FALSE, memory_efficient = FALSE)
 #'
 #' #triggers pseudorandom generation method
-#' get_unique_perms(example_states, 34, true_random = FALSE)
-#' get_unique_perms(example_states, 34, memory_efficient = FALSE, true_random = FALSE)
+#' get_unique_perms(example_states, 34, truly_random = FALSE)
+#' get_unique_perms(example_states, 34, memory_efficient = FALSE, truly_random = FALSE)
 #'
 #' #triggers bitset generation method
 #' get_unique_perms(example_states, 34, fast = FALSE)
-#' get_unique_perms(example_states, 34, fast = FALSE, true_random = FALSE)
+#' get_unique_perms(example_states, 34, fast = FALSE, truly_random = FALSE)
 #'
 #' #EXPLICITLY DEFINING METHOD
 #'
@@ -107,7 +101,8 @@
 #'
 #' #TIMING AND MEMORY USAGE EXAMPLES
 #'
-#' library(R.utils) # for memory usage information
+#' library(R.utils) # for timing
+#' library(profmem) # for memory usage information
 #'
 #' example_states <- c(rep(1, 500), rep(0,500)) #larger dataset
 #'
@@ -123,16 +118,17 @@
 #' get_unique_perms(example_states, 1000, method = "pseudo")
 #' print(proc.time() - ptm)
 #'
-#' print(total(profmem(get_unique_perms(example_states, 1000))))
+#' print(total(profmem(get_unique_perms(example_states, 1000, method = "pseudo"))))
 #'
 #' #bitset
 #' ptm <- proc.time()
 #' get_unique_perms(example_states, 1000, method = "bitset")
 #' print(proc.time() - ptm)
 #'
-#' print(total(profmem(get_unique_perms(example_states, 1000))))
+#' print(total(profmem(get_unique_perms(example_states, 1000, method = "bitset"))))
 #'
 #' @author Dr. Stephen Piccolo, Samantha Jensen
+#' @export
 get_unique_perms <- function(original, number_permutations, fast = TRUE, memory_efficient = TRUE, truly_random = TRUE, method = "default") {
 
   # checking that generating requested permutations is possible
@@ -142,7 +138,13 @@ get_unique_perms <- function(original, number_permutations, fast = TRUE, memory_
     number_permutations = maximum_permutations - 1
   }
 
-  if (memory_efficient & !fast){
+  if (method == "pseudo") {
+    return(pseudorandom_generation(original, number_permutations))
+  }
+  else if (method == "bitset") {
+    return(bitset_generation(original, number_permutations))
+  }
+  else if (memory_efficient & !fast){
     return(bitset_generation(original, number_permutations))
   }
   else if (fast & !truly_random){

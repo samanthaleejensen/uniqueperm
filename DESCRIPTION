@@ -1,5 +1,5 @@
 Package: uniqueperm
-Title: Efficient Unique Permutation of Case-Control Data
+Title: Efficient Unique Random Permutation of Case-Control Data
 Version: 0.0.0.9000
 Authors@R: c(
     person("Samantha", "Jensen", email = "samleejensen@gmail.com", role = c("aut", "cre")),
@@ -10,6 +10,15 @@ Depends: R (>= 3.3.3)
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-Imports: grr
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.0.1
+Imports:
+  grr,
+  iterpc,
+  prodlim,
+  Rcpp,
+  RcppArmadillo
+Suggests:
+  R.utils,
+  profmem
+  

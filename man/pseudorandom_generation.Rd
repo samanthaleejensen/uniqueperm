@@ -4,7 +4,7 @@
 \alias{pseudorandom_generation}
 \title{Fast pseudorandom unique permutation generation}
 \usage{
-pseudorandom_generation()
+pseudorandom_generation(original, number_permutations)
 }
 \arguments{
 \item{original}{an integer (0/1 only) or logical vector representing the

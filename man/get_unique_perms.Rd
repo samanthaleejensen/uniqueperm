@@ -4,9 +4,8 @@
 \alias{get_unique_perms}
 \title{Flexible Unique, Random Permutation Method Caller}
 \usage{
-get_unique_perms(original, number_permutations)
-get_unique_perms(original, number_permutations, fast = FALSE)
-get_unique_perms(original, number_permutations, true_random = FALSE)
+get_unique_perms(original, number_permutations, fast = TRUE,
+  memory_efficient = TRUE, truly_random = TRUE, method = "default")
 }
 \arguments{
 \item{original}{an integer (0/1 only) or logical vector representing the
@@ -16,18 +15,18 @@ statuses of the true observations.}
 
 \item{fast}{\code{TRUE}/\code{FALSE}; whether or not speed of permutation generation should
 be prioritized. Defaults to \code{TRUE}. Will be ignored if \code{method} is
-specified or if \code{true_random = TRUE}.}
+specified or if \code{truly_random = TRUE}.}
 
 \item{memory_efficient}{\code{TRUE}/\code{FALSE}; whether or not memory efficiency should
 be prioritized. Defaults to \code{TRUE}. Will be ignored if \code{method} is
 specified or if \code{fast = TRUE}.}
 
-\item{method}{which type of algorithm to run; options are "default",
-"pseudo", and "bitset". Defaults to "default".}
-
-\item{true_random}{\code{TRUE}/\code{FALSE}; whether we care if permutations are truly
+\item{truly_random}{\code{TRUE}/\code{FALSE}; whether we care if permutations are truly
 randomly generated. Defaults to \code{TRUE}. Will be ignored if \code{method} is
 specified or if \code{fast = FALSE}.}
+
+\item{method}{which type of algorithm to run; options are "default",
+"pseudo", and "bitset". Defaults to "default".}
 }
 \value{
 A 0/1 matrix with \code{number_permutations} rows and
@@ -61,13 +60,13 @@ truly random. Call with \code{method = "pseudo"}.} }
 There is no one method that is fast, memory efficient, and truly random. If
 you are not sure which method will work best for you, you can choose which of
 these factors matters most to you and indicate such with the parameters
-\code{fast}, \code{memory_efficient}, and \code{true_random}. The method will
+\code{fast}, \code{memory_efficient}, and \code{truly_random}. The method will
 then be automatically selected for you.
 
 The below chart represents the combination of parameters that will trigger
 which method:
 \tabular{lllllllllllllllllllllllllllllllllll}{
-\tab \tab \emph{\code{fast}}   \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \emph{\code{memory_efficient}}  \tab \tab \emph{\code{true_random}} \tab \tab \tab \tab \tab \tab \tab \tab \tab \emph{\code{method}} \tab \tab \tab \tab \tab \emph{calls}                          \cr
+\tab \tab \emph{\code{fast}}   \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \emph{\code{memory_efficient}}  \tab \tab \emph{\code{truly_random}} \tab \tab \tab \tab \tab \tab \tab \tab \tab \emph{\code{method}} \tab \tab \tab \tab \tab \emph{calls}                          \cr
 \strong{1} \tab \tab \code{TRUE}          \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \code{TRUE}                     \tab \tab \code{TRUE}               \tab \tab \tab \tab \tab \tab \tab \tab \tab "default"            \tab \tab \tab \tab \tab \code{\link{fast_generation}}         \cr
 \strong{2} \tab \tab \code{TRUE}          \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \code{TRUE}                     \tab \tab \code{FALSE}              \tab \tab \tab \tab \tab \tab \tab \tab \tab "pseudo"             \tab \tab \tab \tab \tab \code{\link{pseudorandom_generation}} \cr
 \strong{3} \tab \tab \code{TRUE}          \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \tab \code{FALSE}                    \tab \tab \code{TRUE}               \tab \tab \tab \tab \tab \tab \tab \tab \tab "default"            \tab \tab \tab \tab \tab \code{\link{fast_generation}}         \cr
@@ -93,12 +92,12 @@ get_unique_perms(example_states, 34, fast = FALSE)
 get_unique_perms(example_states, 34, fast = FALSE, memory_efficient = FALSE)
 
 #triggers pseudorandom generation method
-get_unique_perms(example_states, 34, true_random = FALSE)
-get_unique_perms(example_states, 34, memory_efficient = FALSE, true_random = FALSE)
+get_unique_perms(example_states, 34, truly_random = FALSE)
+get_unique_perms(example_states, 34, memory_efficient = FALSE, truly_random = FALSE)
 
 #triggers bitset generation method
 get_unique_perms(example_states, 34, fast = FALSE)
-get_unique_perms(example_states, 34, fast = FALSE, true_random = FALSE)
+get_unique_perms(example_states, 34, fast = FALSE, truly_random = FALSE)
 
 #EXPLICITLY DEFINING METHOD
 
@@ -108,7 +107,8 @@ get_unique_perms(example_states, 34, method = "bitset") # memory efficient metho
 
 #TIMING AND MEMORY USAGE EXAMPLES
 
-library(R.utils) # for memory usage information
+library(R.utils) # for timing
+library(profmem) # for memory usage information
 
 example_states <- c(rep(1, 500), rep(0,500)) #larger dataset
 
@@ -124,14 +124,14 @@ ptm <- proc.time()
 get_unique_perms(example_states, 1000, method = "pseudo")
 print(proc.time() - ptm)
 
-print(total(profmem(get_unique_perms(example_states, 1000))))
+print(total(profmem(get_unique_perms(example_states, 1000, method = "pseudo"))))
 
 #bitset
 ptm <- proc.time()
 get_unique_perms(example_states, 1000, method = "bitset")
 print(proc.time() - ptm)
 
-print(total(profmem(get_unique_perms(example_states, 1000))))
+print(total(profmem(get_unique_perms(example_states, 1000, method = "bitset"))))
 
 }
 \author{
