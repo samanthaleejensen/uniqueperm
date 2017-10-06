@@ -122,13 +122,8 @@ fast_generation <- function(original, number_permutations) {
 #' @author Sage Wright, Samantha Jensen
 #' @export
 pseudorandom_generation <- function(original, number_permutations) {
-  permutation_iterator <- iterpc(table(original), ordered=TRUE) # using the iterpc package to iterate through possible permutations
-  permutations <- getnext(permutation_iterator, d = number_permutations) # get first number_permutations permutations generated (not truly random)
-
-  if (number_permutations == choose(length(original), min(table(original)))){ # if we generated all possible permutations, the original vector will have been included
-      permutations <- permutations[-nrow(permutations),] # remove the original observations if they were included
-  }
-
+  permutation_iterator <- iterpc::iterpc(table(original), ordered=TRUE) # using the iterpc package to iterate through possible permutations
+  permutations <- iterpc::getnext(permutation_iterator, d = number_permutations) # get first number_permutations permutations generated (not truly random)
   return(permutations)
 }
 
@@ -172,6 +167,9 @@ pseudorandom_generation <- function(original, number_permutations) {
 #'
 #' @author PJ Tatlow, Samantha Jensen
 #' @export
+#' @useDynLib uniqueperm
+#' @importFrom Rcpp sourceCpp
 bitset_generation <- function(original, number_permutations) {
-
+  ones = sum(original == 1)
+  bitset_permutation(original, ones, number_permutations) # C++ method for permuting bitset
 }
