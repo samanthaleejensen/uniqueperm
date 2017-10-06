@@ -35,10 +35,12 @@ arma::mat bitset_permutation(Rcpp::LogicalVector x, unsigned int ones, unsigned 
   // or the number of permutations requested
   while (sets.size() < (permutations + 1)) {
 
+        Rcpp::checkUserInterrupt();
+
 	      // generate list of indices to flip
         std::unordered_set<int> to_flip;
         while(to_flip.size() < ones){
-            to_flip.insert((int)norm_rand() % total);
+            to_flip.insert(R::runif(0,total+1));
         }
 
         for(const auto& index : to_flip){

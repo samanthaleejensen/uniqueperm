@@ -134,6 +134,9 @@ get_unique_perms <- function(original, number_permutations, fast = TRUE, memory_
   # checking that generating requested permutations is possible
   maximum_permutations <- choose(length(original), min(table(original)))# determine max possible permutations
 
+  # set random number generator seeds to different number
+  set.seed(Sys.time())
+
   if (number_permutations > maximum_permutations - 1) { # if not possible, do as many as possible.
     number_permutations = maximum_permutations - 1
   }
