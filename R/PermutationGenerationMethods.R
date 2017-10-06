@@ -122,7 +122,14 @@ fast_generation <- function(original, number_permutations) {
 #' @author Sage Wright, Samantha Jensen
 #' @export
 pseudorandom_generation <- function(original, number_permutations) {
+  permutation_iterator <- iterpc(table(original), ordered=TRUE) # using the iterpc package to iterate through possible permutations
+  permutations <- getnext(permutation_iterator, d = number_permutations) # get first number_permutations permutations generated (not truly random)
 
+  if (number_permutations == choose(length(original), min(table(original)))){ # if we generated all possible permutations, the original vector will have been included
+      permutations <- permutations[-nrow(permutations),] # remove the original observations if they were included
+  }
+
+  return(permutations)
 }
 
 #-------------------------------------------------------------------------
