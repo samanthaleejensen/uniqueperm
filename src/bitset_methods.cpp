@@ -19,8 +19,6 @@ arma::mat bitset_permutation(Rcpp::LogicalVector x, unsigned int ones, unsigned 
         given[i] = x[i];
   }
 
-	GetRNGstate(); // we have to use R's random number interface to avoid package issues
-
   // create the set of bitsets
 	std::unordered_set<std::vector<bool> > sets;
 
@@ -28,32 +26,20 @@ arma::mat bitset_permutation(Rcpp::LogicalVector x, unsigned int ones, unsigned 
   sets.insert(given);
 
   // initalize the bitset we'll use to create the permutations
-  std::vector<bool> bits(total);
+  std::vector<bool> bits = given;
 
   // until we've created enough permutations, keep looping.
   // enough permutations is either the maximum number of permutations
   // or the number of permutations requested
   while (sets.size() < (permutations + 1)) {
 
-        Rcpp::checkUserInterrupt();
+        Rcpp::checkUserInterrupt(); // makes it so that we can exit out while executing from R
 
-	      // generate list of indices to flip
-        std::unordered_set<int> to_flip;
-        while(to_flip.size() < ones){
-            to_flip.insert(R::runif(0,total+1));
-        }
-
-        for(const auto& index : to_flip){
-            bits[index].flip();
-        }
+	      std::random_shuffle(bits.begin(), bits.end());
 
         // put the bitset into the set
         sets.insert(bits);
-        // set all the bits to zero
-        bits.assign(total, false);
   }
-
-  PutRNGstate(); // we're done with R's random number interface
 
   // now that we've generated all our permutations, remove the original
   sets.erase(given);
