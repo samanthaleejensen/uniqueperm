@@ -7,14 +7,14 @@
 using namespace Rcpp;
 
 // bitsetpermute
-arma::mat bitsetpermute(Rcpp::LogicalVector x, unsigned long permutations);
-RcppExport SEXP _uniqueperm_bitsetpermute(SEXP xSEXP, SEXP permutationsSEXP) {
+arma::mat bitsetpermute(Rcpp::LogicalVector original, unsigned long number_permutations);
+RcppExport SEXP _uniqueperm_bitsetpermute(SEXP originalSEXP, SEXP number_permutationsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::LogicalVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< unsigned long >::type permutations(permutationsSEXP);
-    rcpp_result_gen = Rcpp::wrap(bitsetpermute(x, permutations));
+    Rcpp::traits::input_parameter< Rcpp::LogicalVector >::type original(originalSEXP);
+    Rcpp::traits::input_parameter< unsigned long >::type number_permutations(number_permutationsSEXP);
+    rcpp_result_gen = Rcpp::wrap(bitsetpermute(original, number_permutations));
     return rcpp_result_gen;
 END_RCPP
 }

@@ -4,19 +4,19 @@
 //[[Rcpp::depends(RcppArmadillo)]]
 
 // [[Rcpp::export]]
-arma::mat bitsetpermute(Rcpp::LogicalVector x, unsigned long permutations) {
+arma::mat bitsetpermute(Rcpp::LogicalVector original, unsigned long number_permutations) {
 	// set total to the size of the given input vector
-  unsigned int total = x.size();
+  unsigned int total = original.size();
 
   // here we create a bitset based on the vector passed in to make sure
   // that we don't duplicate it later, as well as count the number of ones
-  // in the given input vector "x"
+  // in the given input vector "original"
   //unsigned int ones = 0;
 	//std::bitset<n> given;
 	std::vector<bool> given(total);
 
-	for(int i = 0; i < x.size(); i++) {
-        given[i] = x[i];
+	for(int i = 0; i < original.size(); i++) {
+        given[i] = original[i];
   }
 
   // create the set of bitsets
@@ -31,7 +31,7 @@ arma::mat bitsetpermute(Rcpp::LogicalVector x, unsigned long permutations) {
   // until we've created enough permutations, keep looping.
   // enough permutations is either the maximum number of permutations
   // or the number of permutations requested
-  while (sets.size() < (permutations + 1)) {
+  while (sets.size() < (number_permutations + 1)) {
 
         Rcpp::checkUserInterrupt(); // makes it so that we can exit out while executing from R
 
