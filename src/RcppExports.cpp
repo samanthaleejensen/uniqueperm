@@ -6,22 +6,21 @@
 
 using namespace Rcpp;
 
-// bitset_permutation
-arma::mat bitset_permutation(Rcpp::LogicalVector x, unsigned int ones, unsigned long permutations);
-RcppExport SEXP _uniqueperm_bitset_permutation(SEXP xSEXP, SEXP onesSEXP, SEXP permutationsSEXP) {
+// bitsetpermute
+arma::mat bitsetpermute(Rcpp::LogicalVector original, unsigned long number_permutations);
+RcppExport SEXP _uniqueperm_bitsetpermute(SEXP originalSEXP, SEXP number_permutationsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::LogicalVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< unsigned int >::type ones(onesSEXP);
-    Rcpp::traits::input_parameter< unsigned long >::type permutations(permutationsSEXP);
-    rcpp_result_gen = Rcpp::wrap(bitset_permutation(x, ones, permutations));
+    Rcpp::traits::input_parameter< Rcpp::LogicalVector >::type original(originalSEXP);
+    Rcpp::traits::input_parameter< unsigned long >::type number_permutations(number_permutationsSEXP);
+    rcpp_result_gen = Rcpp::wrap(bitsetpermute(original, number_permutations));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_uniqueperm_bitset_permutation", (DL_FUNC) &_uniqueperm_bitset_permutation, 3},
+    {"_uniqueperm_bitsetpermute", (DL_FUNC) &_uniqueperm_bitsetpermute, 2},
     {NULL, NULL, 0}
 };
 
