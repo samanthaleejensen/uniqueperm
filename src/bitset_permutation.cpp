@@ -1,10 +1,10 @@
 // [[Rcpp::plugins(cpp11)]]`
 #include <unordered_set>
-#include <RcppArmadillo.h> // this is a slightly different Rcpp library that provides slightly faster Rcpp data structures
+#include <RcppArmadillo.h> // this is a slightly different Rcpp library that provides faster Rcpp data structures
 //[[Rcpp::depends(RcppArmadillo)]]
 
 // [[Rcpp::export]]
-arma::mat bitset_permutation(Rcpp::LogicalVector x, unsigned int ones, unsigned long permutations) {
+arma::mat bitsetpermute(Rcpp::LogicalVector x, unsigned long permutations) {
 	// set total to the size of the given input vector
   unsigned int total = x.size();
 
