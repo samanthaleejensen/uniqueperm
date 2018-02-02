@@ -52,27 +52,26 @@ NULL
 #should be calling. It figures out the maximum number of possible permutations
 #and then calls the C++ function bitsetpermute.
 
-#' Space efficient unique permutation generation
+#'Space efficient unique permutation generation
 #'
-#' Efficiently generate truly unique and random permutations of binary data in
-#' R.
+#'Efficiently generate truly unique and random permutations of binary data in R.
 #'
-#' @param original an integer (0/1 only) or logical vector representing the
-#'   statuses of the true observations.
-#' @param number_permutations integer; desired number of permutations to find.
+#'@param original a string, integer, or logical vector representing the labels
+#'  to be permuted (currently we are only able to handle two factor levels).
+#'@param number_permutations integer; desired number of permutations to find.
 #'
-#' @return A 0/1 matrix with \code{number_permutations} rows and
-#'   \code{length(original)} columns. If there are fewer possible permutations
-#'   than are requested, will return as many as possible.
+#'@return A 0/1 matrix with \code{number_permutations} rows and
+#'  \code{length(original)} columns. If there are fewer possible permutations
+#'  than are requested, will return as many as possible.
 #'
-#' @details This function uses C++ bitsets to decrease memory load and
-#'   \code{random_shuffle} to increase speed. It is capable of generating
-#'   1,000,000 unique permutations of a 1000 observation binary vector in
-#'   around 30 seconds.
+#'@details This function uses C++ bitsets to decrease memory load and
+#'  \code{random_shuffle} to increase speed. It is capable of generating
+#'  1,000,000 unique permutations of a 1000 observation binary vector in around
+#'  30 seconds.
 #'
-#'   If you are getting errors while using this method it is likely because this
-#'   method has a C++ implementation. Check to make sure that you have the
-#'   necessary tools to compile C++ code.
+#'  If you are getting errors while using this method it is likely because this
+#'  method has a C++ implementation. Check to make sure that you have the
+#'  necessary tools to compile C++ code.
 #'
 #' @examples
 #' example_states <- c(0,0,0,0,1,1,1,1)
@@ -92,21 +91,43 @@ NULL
 #'
 #' print(total(profmem(permute(example_states, 1000))))
 #'
-#' @author PJ Tatlow, Samantha Jensen
+#'@author PJ Tatlow, Samantha Jensen
 #'
-#' @useDynLib uniqueperm
-#' @importFrom Rcpp sourceCpp
+#'@useDynLib uniqueperm
+#'@importFrom Rcpp sourceCpp
 #'
-#' @export
+#'@export
 permute <- function(original, number_permutations) {
 
-  # checking that generating requested permutations is possible
-  maximum_permutations <- choose(length(original), min(table(original)))# determine max possible permutations
+  #check number of factors
+  original <- as.factor(original)
 
-  if (number_permutations > maximum_permutations - 1) { # if not possible, do as many as possible.
-    number_permutations = maximum_permutations - 1
+  if(length(levels(original_factor)) != 2)
+  {
+    print("This package is currently capable only of permuting classifications with only two possible levels. Please drop a level to continue.")
   }
+  else
+  {
+    #convert to binary format
+    zero <- levels(original)[1]
+    one <- levels(original)[2]
 
-  bitsetpermute(original, number_permutations) # calling C++ method, which will keep going until all number_permutations are found
+    original_bin <- original == one
+
+    # checking that generating requested permutations is possible
+    maximum_permutations <- choose(length(original), min(table(original)))# determine max possible permutations
+
+    if (number_permutations > maximum_permutations - 1) { # if not possible, do as many as possible.
+      number_permutations = maximum_permutations - 1
+    }
+
+    permutations <-bitsetpermute(original_bin, number_permutations) # calling C++ method, which will keep going until all number_permutations are found
+
+    #replace original labels
+    permutations[permutations==0] <- zero
+    permutations[permutations==1] <- one
+
+    return(permutations)
+  }
 }
 
