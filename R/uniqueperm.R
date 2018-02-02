@@ -57,8 +57,7 @@ NULL
 #' Efficiently generate truly unique and random permutations of binary data in
 #' R.
 #'
-#' @param original an integer (0/1 only) or logical vector representing the
-#'   statuses of the true observations.
+#' @param original a string, integer, or logical vector representing a the labels to be permuted (currently we are only able to handle two factor levels).
 #' @param number_permutations integer; desired number of permutations to find.
 #'
 #' @return A 0/1 matrix with \code{number_permutations} rows and
