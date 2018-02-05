@@ -102,7 +102,7 @@ permute <- function(original, number_permutations) {
   #check number of factors
   original <- as.factor(original)
 
-  if(length(levels(original_factor)) != 2)
+  if(length(levels(original)) != 2)
   {
     print("This package is currently capable only of permuting classifications with only two possible levels. Please drop a level to continue.")
   }
@@ -127,7 +127,8 @@ permute <- function(original, number_permutations) {
     permutations[permutations==0] <- zero
     permutations[permutations==1] <- one
 
-    return(permutations)
+    #return as a list not a matrix
+    return(convertRowsToList(permutations))
   }
 }
 
