@@ -60,14 +60,14 @@ NULL
 #'  to be permuted (currently we are only able to handle two factor levels).
 #'@param number_permutations integer; desired number of permutations to find.
 #'
-#'@return A 0/1 matrix with \code{number_permutations} rows and
-#'  \code{length(original)} columns. If there are fewer possible permutations
-#'  than are requested, will return as many as possible.
+#'@return A list of \code{number_permutations} permutations of \code{original}.
+#'  If there are fewer possible permutations than are requested, will return as
+#'  many as possible.
 #'
 #'@details This function uses C++ bitsets to decrease memory load and
 #'  \code{random_shuffle} to increase speed. It is capable of generating
 #'  1,000,000 unique permutations of a 1000 observation binary vector in around
-#'  30 seconds.
+#'  1 minute.
 #'
 #'  If you are getting errors while using this method it is likely because this
 #'  method has a C++ implementation. Check to make sure that you have the
