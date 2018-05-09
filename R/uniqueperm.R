@@ -128,7 +128,8 @@ permute <- function(original, number_permutations) {
     permutations[permutations==1] <- one
 
     #return as a list not a matrix
-    return(convertRowsToList(permutations))
+    return(BBmisc::convertRowsToList(permutations))
   }
 }
+
 
