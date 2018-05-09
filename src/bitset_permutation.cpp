@@ -44,7 +44,7 @@ arma::mat bitsetpermute(Rcpp::LogicalVector original, unsigned long number_permu
   // create an R matrix initialized to zeros, the proper size that we need
   arma::mat matrix = arma::zeros(number_permutations,total);
 
-  // iterate through every element in the set
+  // // iterate through every element in the set
   std::unordered_set< std::vector<bool> >::iterator it = permutations.begin();
   for (unsigned int i=0; i < number_permutations; i++) {
       // for each bit in the bitset, set the value in the matrix to the value of the bit

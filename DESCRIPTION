@@ -1,6 +1,6 @@
 Package: uniqueperm
 Title: Efficient Unique Random Permutation of Case-Control Data
-Version: 0.0.0.9000
+Version: 0.0.0.9001
 Authors@R: c(
     person("Samantha", "Jensen", email = "samleejensen@gmail.com", role = c("aut", "cre")),
     person("Caleb", "Cranney", role = c("aut")),
@@ -14,7 +14,8 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.0.1
 Imports:
-  Rcpp (>= 0.11.0)
+  Rcpp (>= 0.11.0),
+  BBmisc
 Suggests:
   R.utils,
   profmem
