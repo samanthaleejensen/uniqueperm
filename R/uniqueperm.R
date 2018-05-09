@@ -132,4 +132,63 @@ permute <- function(original, number_permutations) {
   }
 }
 
+#-------------------------------------------------------------------------
+#                            Multi-class Method
+#-------------------------------------------------------------------------
+
+#' Multiple class permutation generation
+#'
+#' This method is not as fast or memory efficient as the bitset permutation method,
+#' but is capable of generating unique permutations of any vector, even one with
+#' multiple classes.
+#'
+#' @author
+#' Dr. Stephen Piccolo, Samantha Jensen
+#' @export
+multiclasspermute <- function(original, number_permutations) {
+  number_observations <- length(original) #number of observations
+
+  #find which group is larger
+  grouped_observations <- sort(table(original)) # group cases and controls and count
+  minority <- as.integer(names(grouped_observations)[1]) # group with least observations
+  majority <- as.integer(names(grouped_observations)[2]) # group with more observations
+
+  number_minority <- grouped_observations[names(grouped_observations)[1]] # this is the least number of indices we need to change for each permutation
+
+  #create list of number_permutations/maximum_permutations permutations (list of lists of indices of minority group)
+  permutations <- list(which(original==minority)) # original observations are first element of list to avoid duplication
+  to_generate <- ceiling(number_permutations * 1.01) # generate a few more permutations than necessary because some will be duplicates
+
+  #sub-function to generate a group of unique permutations
+  bulk_generate <- function() {
+    # a sub-sub-function to return a sorted randomly generated list of indices
+    sample_sort <- function(max_index) {
+      sample <- sample.int(max_index, size = number_minority) # get number_minority values between 1 and number_observations
+      return(grr::sort2(sample)) # return a sorted list of indices
+    }
+
+    observations_per_permutation <- rep(number_observations, to_generate) # get a list of the number of observations per each new permutation (they will all be the same)
+    new_permutations <- sapply(observations_per_permutation, sample_sort, USE.NAMES = FALSE, simplify = FALSE)
+    return(unique(c(permutations, new_permutations))) # add newly generated permutations to previously generated ones
+  }
+
+  permutations <- bulk_generate() # should return almost number_permutations distinct permutations
+
+  to_generate <- ceiling(number_permutations * 0.10) # keep adding 10% to permutation list until proper length
+
+  while ((length(permutations) < (number_permutations + 1))) {
+    permutations <- bulk_generate() #generate to_generate permutations at once
+  }
+
+  #remove original observations and any extra permutations
+  permutations <- permutations[2:(number_permutations + 1)]
+
+  #make and return matrix of permutations
+  permutations_matrix <- matrix(majority, ncol=number_observations, nrow = length(permutations)) # initially fill entirely with majority element
+  for (permutation in 1:length(permutations)) {
+    permutations_matrix[permutation,permutations[[permutation]]] <- minority # set all indices in permutation to minority element in this row
+  }
+
+  return(permutations_matrix)
+}
 

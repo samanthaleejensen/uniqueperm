@@ -7,25 +7,24 @@
 permute(original, number_permutations)
 }
 \arguments{
-\item{original}{an integer (0/1 only) or logical vector representing the
-statuses of the true observations.}
+\item{original}{a string, integer, or logical vector representing the labels
+to be permuted (currently we are only able to handle two factor levels).}
 
 \item{number_permutations}{integer; desired number of permutations to find.}
 }
 \value{
-A 0/1 matrix with \code{number_permutations} rows and
-\code{length(original)} columns. If there are fewer possible permutations
-than are requested, will return as many as possible.
+A list of \code{number_permutations} permutations of \code{original}.
+If there are fewer possible permutations than are requested, will return as
+many as possible.
 }
 \description{
-Efficiently generate truly unique and random permutations of binary data in
-R.
+Efficiently generate truly unique and random permutations of binary data in R.
 }
 \details{
 This function uses C++ bitsets to decrease memory load and
 \code{random_shuffle} to increase speed. It is capable of generating
-1,000,000 unique permutations of a 1000 observation binary vector in
-around 30 seconds.
+1,000,000 unique permutations of a 1000 observation binary vector in around
+1 minute.
 
 If you are getting errors while using this method it is likely because this
 method has a C++ implementation. Check to make sure that you have the
